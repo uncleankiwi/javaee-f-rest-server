@@ -1,6 +1,7 @@
 package com.kovunov.service;
 
 import com.kovunov.entity.Player;
+import com.kovunov.entity.PlayerUpdateDto;
 import com.kovunov.entity.Request;
 
 import javax.ejb.Stateless;
@@ -89,6 +90,18 @@ public class PlayerServiceImpl implements PlayerService {
 	@Override
 	public Player getById(Long id) {
 		return em.find(Player.class, id);
+	}
+
+	@Override
+	public Player updatePlayer(PlayerUpdateDto dto, Player playerToUpdate) {
+		if (dto.getUserName() != null) {
+			playerToUpdate.setUserName(dto.getUserName());
+		}
+		if (dto.getFirstName() != null) {
+			playerToUpdate.setFirstName(dto.getFirstName());
+		}
+		em.merge(playerToUpdate);
+		return playerToUpdate;
 	}
 
 	@Override

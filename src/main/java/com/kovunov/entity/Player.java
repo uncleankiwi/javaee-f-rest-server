@@ -18,6 +18,8 @@ import java.util.List;
 @NamedQuery(name = "Player.findAll", query = "SELECT p FROM Player p")
 @NamedQuery(name = "Player.getByUserName", query = "SELECT p from Player p where p.userName = :userName")
 @NamedQuery(name = "Player.clearAll", query = "DELETE FROM Player")
+//get players by team. may have to find team by name first, then by id in this query
+@NamedQuery(name = "Player.findByTeam", query = "SELECT p from Player p where p.team = :teamId")
 public class Player implements Comparable<Player>, Serializable {
     @Id
     @GeneratedValue(generator = "Player")
