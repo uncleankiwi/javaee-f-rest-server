@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedQuery(name = "League.findAll", query = "SELECT l FROM League l")
 public class League {
 	@Id
 	@GeneratedValue(generator = "LEAGUE_ID_GEN")

@@ -6,6 +6,7 @@ import com.kovunov.entity.Team;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Stateless
 public class LeagueServiceImpl implements LeagueService{
@@ -21,5 +22,15 @@ public class LeagueServiceImpl implements LeagueService{
 	@Override
 	public void addTeamToLeague(League league, Team team) {
 		team.setLeague(league);
+	}
+
+	@Override
+	public League getById(Long id) {
+		return null;
+	}
+
+	@Override
+	public List<League> getLeagueList() {
+		return null;
 	}
 }
