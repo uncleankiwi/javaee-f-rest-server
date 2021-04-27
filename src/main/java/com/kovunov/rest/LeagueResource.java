@@ -44,7 +44,15 @@ public class LeagueResource {
 		Team teamToAdd = teamService.getById(team.getId());
 		leagueService.addTeamToLeague(league, teamToAdd);
 		return Response.ok()
-				.entity("Added team " + teamToAdd.getId() + " to " + league.getId())
+				.entity("Added team " + team + " to " + league)
+				.build();
+	}
+
+	@GET
+	@Produces({APPLICATION_JSON})
+	public Response getAllLeagues() {
+		return Response.ok()
+				.entity(leagueService.getLeagueList())
 				.build();
 	}
 }

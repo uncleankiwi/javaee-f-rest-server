@@ -1,7 +1,9 @@
 package com.kovunov.rest;
 
 import com.kovunov.entity.Player;
+import com.kovunov.entity.PlayerUpdateDto;
 import com.kovunov.entity.Team;
+import com.kovunov.entity.TeamUpdateDto;
 import com.kovunov.service.PlayerService;
 import com.kovunov.service.TeamService;
 
@@ -53,7 +55,27 @@ public class TeamResource {
 		Player playerToAdd = playerService.getById(id);
 		teamService.addPlayerToTeam(team, playerToAdd);
 		return Response.ok()
-				.entity("Added player " + playerToAdd.getId() + " to team #" + team.getId() + " " + team.getName())
+				.entity("Added player " + playerToAdd + " to team " + team)
 				.build();
+	}
+
+	@PUT
+	@Consumes({APPLICATION_JSON})
+	@Produces({APPLICATION_JSON})
+	public Response updateTeamName(TeamUpdateDto dto) {
+		if (dto.getId() == null || dto.getId() == 0) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("{\n" +
+							"\t\"error\": \"Please provide correct id\"\n" +
+							"}").build();
+		}
+		Team teamToUpdate = teamService.getById(dto.getId());
+		if (teamToUpdate == null) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity("{\n" +
+							"\t\"error\": \"No such team\"\n" +
+							"}").build();
+		}
+		return Response.ok().entity(teamService.updateTeamName(dto, teamToUpdate)).build();
 	}
 }
