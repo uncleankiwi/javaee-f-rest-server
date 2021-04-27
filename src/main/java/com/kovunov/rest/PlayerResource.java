@@ -25,7 +25,7 @@ public class PlayerResource {
     @GET
     @Path("/ping")
     public Response ping() {
-        return Response.ok().entity("Service is working").build();
+        return Response.ok().entity("Player service is working").build();
     }
 
     @DELETE
@@ -33,7 +33,7 @@ public class PlayerResource {
     @Produces(TEXT_PLAIN)
     public Response deletePlayer(@PathParam("id") long id) {
         playerService.removeFromList(playerService.getById(id));
-        return Response.ok().entity("player deleted").build();
+        return Response.ok().entity("Player " + id + " deleted").build();
     }
 
 

@@ -21,6 +21,12 @@ public class LeagueResource {
 	@EJB
 	TeamService teamService;
 
+	@GET
+	@Path("/ping")
+	public Response ping() {
+		return Response.ok().entity("League service is working").build();
+	}
+
 	@POST
 	@Consumes({APPLICATION_JSON})
 	@Produces({APPLICATION_JSON})
@@ -37,6 +43,8 @@ public class LeagueResource {
 		League league = leagueService.getById(id);
 		Team teamToAdd = teamService.getById(team.getId());
 		leagueService.addTeamToLeague(league, teamToAdd);
-		return Response.ok().entity("Added team " + team.getId() + " to " + league.getId()).build();
+		return Response.ok()
+				.entity("Added team " + teamToAdd.getId() + " to " + league.getId())
+				.build();
 	}
 }
