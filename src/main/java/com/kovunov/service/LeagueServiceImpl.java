@@ -1,5 +1,6 @@
 package com.kovunov.service;
 
+import com.kovunov.entity.League;
 import com.kovunov.entity.Team;
 
 import javax.ejb.Stateless;
@@ -13,12 +14,12 @@ public class LeagueServiceImpl implements LeagueService{
 	private EntityManager em;
 
 	@Override
-	public void createLeague() {
-
+	public void createLeague(League league) {
+		em.persist(league);
 	}
 
 	@Override
-	public void addTeamToLeague(Team team) {
-
+	public void addTeamToLeague(League league, Team team) {
+		team.setLeague(league);
 	}
 }
