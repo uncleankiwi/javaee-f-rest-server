@@ -22,6 +22,7 @@ public class LeagueServiceImpl implements LeagueService{
 	@Override
 	public void addTeamToLeague(League league, Team team) {
 		team.setLeague(league);
+		em.persist(team);
 	}
 
 	@Override

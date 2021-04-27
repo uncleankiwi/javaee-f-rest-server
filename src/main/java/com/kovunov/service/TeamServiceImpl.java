@@ -29,6 +29,7 @@ public class TeamServiceImpl implements TeamService {
 	@Override
 	public void addPlayerToTeam(Team team, Player player) {
 		player.setTeam(team);
+		em.persist(player);
 	}
 
 	@Override

@@ -11,6 +11,8 @@ import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
+import java.util.List;
+
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
@@ -41,6 +43,11 @@ public class TeamResource {
 	@GET
 	@Produces({APPLICATION_JSON})
 	public Response getAllTeams() {
+		List<Team> teams = teamService.getTeamList();
+		for (Team t : teams) {
+			System.out.println(t.getName() + ":size " + t.getPlayerList().size());	//TODO rm
+		}
+
 		return Response.ok()
 				.entity(teamService.getTeamList())
 				.build();
