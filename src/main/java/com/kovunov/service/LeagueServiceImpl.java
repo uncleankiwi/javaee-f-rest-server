@@ -26,11 +26,12 @@ public class LeagueServiceImpl implements LeagueService{
 
 	@Override
 	public League getById(Long id) {
-		return null;
+		return em.find(League.class, id);
 	}
 
 	@Override
 	public List<League> getLeagueList() {
-		return null;
+		return em.createNamedQuery("League.findAll", League.class)
+				.getResultList();
 	}
 }
