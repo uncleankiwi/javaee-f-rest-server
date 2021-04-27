@@ -14,26 +14,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
 @NamedQuery(name = "Player.findAll", query = "SELECT p FROM Player p")
+@NamedQuery(name = "Player.findAllByTeam", query = "SELECT p FROM Player p WHERE p.team.id = :teamId")
 @NamedQuery(name = "Player.getByUserName", query = "SELECT p from Player p where p.userName = :userName")
 @NamedQuery(name = "Player.clearAll", query = "DELETE FROM Player")
-//get players by team. may have to find team by name first, then by id in this query
-@NamedQuery(name = "Player.findByTeam", query = "SELECT p from Player p where p.team = :teamId")
 public class Player implements Comparable<Player>, Serializable {
     @Id
-    @GeneratedValue(generator = "Player")
+    @GeneratedValue(generator = "PLAYER_ID_GEN")
     private Long id;
     @Column(unique = true)
     private String userName;
     private String firstName;
-    private String lastName;
 
     private Date signedUpDate;
-    private Date birthDate;
-
-    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
-    private List<Request> requestList;
 
     @ManyToOne
     @JoinColumn(name = "id_team")
@@ -55,10 +48,12 @@ public class Player implements Comparable<Player>, Serializable {
         this.firstName = firstName;
     }
 
-    public Player(String userName, String firstName, String lastName) {
-        this.userName = userName;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    @Override
+    public String toString() {
+        return "Player{" +
+                "userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                '}';
     }
 
     @Override

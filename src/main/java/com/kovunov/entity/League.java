@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class League {
 	@Id
-	@GeneratedValue(generator = "League")
+	@GeneratedValue(generator = "LEAGUE_ID_GEN")
 	private Long id;
 
 	@OneToMany(mappedBy = "league", fetch = FetchType.EAGER)

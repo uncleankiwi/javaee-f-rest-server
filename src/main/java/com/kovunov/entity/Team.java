@@ -6,16 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedQuery(name = "Team.findAll", query = "SELECT t FROM Team t")
 public class Team {
 	@Id
-	@GeneratedValue(generator = "Team")
+	@GeneratedValue(generator = "TEAM_ID_GEN")
 	private Long id;
 
 	@OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
@@ -28,7 +29,7 @@ public class Team {
 
 	private String name;
 
-	private LocalDateTime timeOfNextGame;
+	private Date timeOfNextGame;
 
 	public Team(String name) {
 		this.name = name;

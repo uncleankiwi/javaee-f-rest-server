@@ -5,7 +5,8 @@
     <persistence-unit name="playerManagement" transaction-type="JTA">
         <jta-data-source>java:/postgreDataSource</jta-data-source>
         <class>com.kovunov.entity.Player</class>
-        <class>com.kovunov.entity.Request</class>
+        <class>com.kovunov.entity.Team</class>
+        <class>com.kovunov.entity.League</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

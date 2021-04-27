@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerUpdateDto {
-	public Long id;
-	public String userName;
-	private String firstName;
+    private Long id;
+    private String userName;
+    private String firstName;
 }
