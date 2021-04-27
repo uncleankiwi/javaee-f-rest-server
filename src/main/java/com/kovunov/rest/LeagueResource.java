@@ -53,12 +53,6 @@ public class LeagueResource {
 	@GET
 	@Produces({APPLICATION_JSON})
 	public Response getAllLeagues() {
-
-		List<League> leagues = leagueService.getLeagueList();
-		for (League l : leagues) {
-			System.out.println(l.getName() + ":size " + l.getTeamList().size());	//TODO rm
-		}
-
 		return Response.ok()
 				.entity(leagueService.getLeagueList())
 				.build();

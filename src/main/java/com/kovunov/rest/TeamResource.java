@@ -43,11 +43,6 @@ public class TeamResource {
 	@GET
 	@Produces({APPLICATION_JSON})
 	public Response getAllTeams() {
-		List<Team> teams = teamService.getTeamList();
-		for (Team t : teams) {
-			System.out.println(t.getName() + ":size " + t.getPlayerList().size());	//TODO rm
-		}
-
 		return Response.ok()
 				.entity(teamService.getTeamList())
 				.build();
@@ -59,7 +54,7 @@ public class TeamResource {
 	@Produces(TEXT_PLAIN)
 	public Response addPlayerToTeam(@PathParam("id") long id, Player player) {
 		Team team = teamService.getById(id);
-		Player playerToAdd = playerService.getById(id);
+		Player playerToAdd = playerService.getById(player.getId());
 		teamService.addPlayerToTeam(team, playerToAdd);
 		return Response.ok()
 				.entity("Added player " + playerToAdd + " to team " + team)
