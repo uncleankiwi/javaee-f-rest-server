@@ -4,9 +4,9 @@
              version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
     <persistence-unit name="playerManagement" transaction-type="JTA">
         <jta-data-source>java:/postgreDataSource</jta-data-source>
-        <class>com.kovunov.entity.Player</class>
-        <class>com.kovunov.entity.Team</class>
-        <class>com.kovunov.entity.League</class>
+        <class>org.uc.entity.Player</class>
+        <class>org.uc.entity.Team</class>
+        <class>org.uc.entity.League</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

@@ -1,8 +1,8 @@
-package com.kovunov.service;
+package org.uc.service;
 
-import com.kovunov.entity.Player;
-import com.kovunov.entity.Team;
-import com.kovunov.entity.TeamUpdateDto;
+import org.uc.entity.Player;
+import org.uc.entity.Team;
+import org.uc.entity.TeamUpdateDto;
 
 import java.util.List;
 

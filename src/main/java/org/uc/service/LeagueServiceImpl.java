@@ -1,7 +1,7 @@
-package com.kovunov.service;
+package org.uc.service;
 
-import com.kovunov.entity.League;
-import com.kovunov.entity.Team;
+import org.uc.entity.League;
+import org.uc.entity.Team;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

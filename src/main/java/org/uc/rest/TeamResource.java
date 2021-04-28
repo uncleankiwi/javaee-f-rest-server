@@ -1,17 +1,14 @@
-package com.kovunov.rest;
+package org.uc.rest;
 
-import com.kovunov.entity.Player;
-import com.kovunov.entity.PlayerUpdateDto;
-import com.kovunov.entity.Team;
-import com.kovunov.entity.TeamUpdateDto;
-import com.kovunov.service.PlayerService;
-import com.kovunov.service.TeamService;
+import org.uc.entity.Player;
+import org.uc.entity.Team;
+import org.uc.entity.TeamUpdateDto;
+import org.uc.service.PlayerService;
+import org.uc.service.TeamService;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-
-import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;

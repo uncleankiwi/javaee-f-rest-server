@@ -1,4 +1,4 @@
-package com.kovunov.entity;
+package org.uc.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

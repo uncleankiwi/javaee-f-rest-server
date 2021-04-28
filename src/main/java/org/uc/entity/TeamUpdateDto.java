@@ -1,4 +1,4 @@
-package com.kovunov.entity;
+package org.uc.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
