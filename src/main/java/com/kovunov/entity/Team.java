@@ -1,6 +1,6 @@
 package com.kovunov.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class Team {
 
 	@ManyToOne
 	@JoinColumn(name = "id_league")
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //@JsonIgnore only for getLeague()
 	private League league;
 
 	private String name;

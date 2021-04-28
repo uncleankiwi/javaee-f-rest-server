@@ -22,6 +22,10 @@ public class League {
 	@OneToMany(mappedBy = "league", fetch = FetchType.EAGER)
 	private List<Team> teamList;
 
+	public League(Long id){
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
 		return "League{" +
