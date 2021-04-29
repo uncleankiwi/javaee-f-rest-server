@@ -23,7 +23,7 @@ public class PlayerResource {
     @GET
     @Path("/ping")
     public Response ping() {
-        return Response.ok().entity("Player service is working").build();
+        return ResponseFactory.ok("Player service is working");
     }
 
     @DELETE

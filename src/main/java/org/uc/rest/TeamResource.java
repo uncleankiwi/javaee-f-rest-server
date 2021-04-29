@@ -3,6 +3,7 @@ package org.uc.rest;
 import org.uc.entity.Player;
 import org.uc.entity.Team;
 import org.uc.entity.TeamUpdateDto;
+import org.uc.exception.*;
 import org.uc.service.PlayerService;
 import org.uc.service.TeamService;
 
@@ -24,25 +25,25 @@ public class TeamResource {
 	@GET
 	@Path("/ping")
 	public Response ping() {
-		return Response.ok().entity("Team service is working").build();
+		return ResponseFactory.ok("Team service is working");
 	}
 
 	@POST
 	@Consumes({APPLICATION_JSON})
 	@Produces({APPLICATION_JSON})
 	public Response createTeam(Team team) {
-		teamService.createTeam(team);
-		return Response.status(Response.Status.CREATED)
-				.entity(team)
-				.build();
+		try {
+			teamService.createTeam(team);
+		} catch (InvalidLeagueIdException | LeagueNotFoundException e) {
+			return ResponseFactory.badRequest(e.getMessage());
+		}
+		return ResponseFactory.created(team);
 	}
 
 	@GET
 	@Produces({APPLICATION_JSON})
 	public Response getAllTeams() {
-		return Response.ok()
-				.entity(teamService.getTeamList())
-				.build();
+		return ResponseFactory.ok(teamService.getTeamList());
 	}
 
 	@PUT
@@ -50,31 +51,29 @@ public class TeamResource {
 	@Consumes({APPLICATION_JSON})
 	@Produces(TEXT_PLAIN)
 	public Response addPlayerToTeam(@PathParam("id") long id, Player player) {
-		Team team = teamService.getById(id);
-		Player playerToAdd = playerService.getById(player.getId());
-		teamService.addPlayerToTeam(team, playerToAdd);
-		return Response.ok()
-				.entity("Added player " + playerToAdd + " to team " + team)
-				.build();
+		Team team;
+		Player playerToAdd;
+
+		try {
+			team = teamService.getById(id);
+			playerToAdd = playerService.getById(player.getId());
+			teamService.addPlayerToTeam(team, playerToAdd);
+		} catch (InvalidTeamIdException | TeamNotFoundException | InvalidPlayerIdException | PlayerNotFoundException e) {
+			return ResponseFactory.badRequest(e.getMessage());
+		}
+		return ResponseFactory.ok("Added player " + playerToAdd + " to team " + team);
 	}
 
 	@PUT
 	@Consumes({APPLICATION_JSON})
 	@Produces({APPLICATION_JSON})
 	public Response updateTeamName(TeamUpdateDto dto) {
-		if (dto.getId() == null || dto.getId() == 0) {
-			return Response.status(Response.Status.BAD_REQUEST)
-					.entity("{\n" +
-							"\t\"error\": \"Please provide correct id\"\n" +
-							"}").build();
+		Team teamToUpdate;
+		try {
+			teamToUpdate = teamService.getById(dto.getId());
+		} catch (InvalidTeamIdException | TeamNotFoundException e) {
+			return ResponseFactory.badRequest(e.getMessage());
 		}
-		Team teamToUpdate = teamService.getById(dto.getId());
-		if (teamToUpdate == null) {
-			return Response.status(Response.Status.BAD_REQUEST)
-					.entity("{\n" +
-							"\t\"error\": \"No such team\"\n" +
-							"}").build();
-		}
-		return Response.ok().entity(teamService.updateTeamName(dto, teamToUpdate)).build();
+		return ResponseFactory.ok(teamService.updateTeamName(dto, teamToUpdate));
 	}
 }

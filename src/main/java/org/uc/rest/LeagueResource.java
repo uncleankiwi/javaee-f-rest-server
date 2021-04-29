@@ -2,6 +2,7 @@ package org.uc.rest;
 
 import org.uc.entity.League;
 import org.uc.entity.Team;
+import org.uc.exception.*;
 import org.uc.service.LeagueService;
 import org.uc.service.TeamService;
 
@@ -24,7 +25,7 @@ public class LeagueResource {
 	@GET
 	@Path("/ping")
 	public Response ping() {
-		return Response.ok().entity("League service is working").build();
+		return ResponseFactory.ok("League service is working");
 	}
 
 	@POST
@@ -32,7 +33,7 @@ public class LeagueResource {
 	@Produces({APPLICATION_JSON})
 	public Response createLeague(League league) {
 		leagueService.createLeague(league);
-		return Response.status(Response.Status.CREATED).entity(league).build();
+		return ResponseFactory.created(league);
 	}
 
 	@PUT
@@ -40,19 +41,22 @@ public class LeagueResource {
 	@Consumes({APPLICATION_JSON})
 	@Produces(TEXT_PLAIN)
 	public Response addTeamToLeague(@PathParam("id") long id, Team team) {
-		League league = leagueService.getById(id);
-		Team teamToAdd = teamService.getById(team.getId());
-		leagueService.addTeamToLeague(league, teamToAdd);
-		return Response.ok()
-				.entity("Added team " + team + " to " + league)
-				.build();
+		League league = null;
+		Team teamToAdd;
+		try {
+			league = leagueService.getById(id);
+			teamToAdd = teamService.getById(team.getId());
+			leagueService.addTeamToLeague(league, teamToAdd);
+		} catch (InvalidLeagueIdException | LeagueNotFoundException | InvalidTeamIdException | TeamNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return ResponseFactory.ok("Added team " + team + " to " + league);
 	}
 
 	@GET
 	@Produces({APPLICATION_JSON})
 	public Response getAllLeagues() {
-		return Response.ok()
-				.entity(leagueService.getLeagueList())
-				.build();
+		return ResponseFactory.ok(leagueService.getLeagueList());
 	}
 }
