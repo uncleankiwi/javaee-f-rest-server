@@ -2,9 +2,11 @@ package org.uc.rest;
 
 import org.uc.entity.League;
 import org.uc.entity.Team;
-import org.uc.exception.*;
+import org.uc.exception.InvalidLeagueIdException;
+import org.uc.exception.InvalidTeamIdException;
+import org.uc.exception.LeagueNotFoundException;
+import org.uc.exception.TeamNotFoundException;
 import org.uc.service.LeagueService;
-import org.uc.service.TeamService;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -18,9 +20,6 @@ public class LeagueResource {
 
 	@EJB
 	LeagueService leagueService;
-
-	@EJB
-	TeamService teamService;
 
 	@GET
 	@Path("/ping")
