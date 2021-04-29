@@ -3,6 +3,8 @@ package org.uc.service;
 import org.uc.entity.Player;
 import org.uc.entity.PlayerUpdateDto;
 import org.uc.entity.Team;
+import org.uc.exception.InvalidPlayerIdException;
+import org.uc.exception.PlayerNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -12,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -86,15 +89,25 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public Player updatePlayer(PlayerUpdateDto dto, Player playerToUpdate) {
+	public Player updatePlayer(PlayerUpdateDto dto)
+			throws InvalidPlayerIdException, PlayerNotFoundException {
+		if (dto.getId() == null || dto.getId() == 0) {
+			throw new InvalidPlayerIdException(dto.getId());
+		}
+
+		Player playerToUpdate = getById(dto.getId());
+
+		if (playerToUpdate == null) {
+			throw new PlayerNotFoundException(dto.getId());
+		}
+
 		if (dto.getUserName() != null) {
 			playerToUpdate.setUserName(dto.getUserName());
 		}
 		if (dto.getFirstName() != null) {
 			playerToUpdate.setFirstName(dto.getFirstName());
 		}
-		em.merge(playerToUpdate);
-		return playerToUpdate;
+		return em.merge(playerToUpdate);
 	}
 
 	@Override

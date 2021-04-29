@@ -3,6 +3,9 @@ package org.uc.rest;
 import org.uc.entity.Player;
 import org.uc.entity.PlayerUpdateDto;
 import org.uc.entity.Team;
+import org.uc.exception.InvalidPlayerIdException;
+import org.uc.exception.ResponseFactory;
+import org.uc.exception.PlayerNotFoundException;
 import org.uc.service.PlayerService;
 import org.uc.service.TeamService;
 
@@ -71,20 +74,14 @@ public class PlayerResource {
     @Consumes({APPLICATION_JSON})
     @Produces({APPLICATION_JSON})
     public Response updatePlayer(PlayerUpdateDto updateDto) {
-        if (updateDto.getId() == null || updateDto.getId() == 0) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\n" +
-                            "\t\"error\": \"Please provide correct id\"\n" +
-                            "}").build();
+        Player player;
+        try {
+            player = playerService.updatePlayer(updateDto);
         }
-        Player playerToUpdate = playerService.getById(updateDto.getId());
-        if (playerToUpdate == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\n" +
-                            "\t\"error\": \"No such player\"\n" +
-                            "}").build();
+        catch (InvalidPlayerIdException | PlayerNotFoundException e) {
+            return ResponseFactory.badRequest(e.getMessage());
         }
-        return Response.ok().entity(playerService.updatePlayer(updateDto, playerToUpdate)).build();
+        return ResponseFactory.ok(player);
     }
 
     @POST
