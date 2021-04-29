@@ -3,9 +3,7 @@ package org.uc.service;
 import org.uc.entity.League;
 import org.uc.entity.Team;
 import org.uc.exception.InvalidLeagueIdException;
-import org.uc.exception.InvalidTeamIdException;
 import org.uc.exception.LeagueNotFoundException;
-import org.uc.exception.TeamNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

@@ -3,10 +3,7 @@ package org.uc.service;
 import org.uc.entity.Player;
 import org.uc.entity.PlayerUpdateDto;
 import org.uc.entity.Team;
-import org.uc.exception.InvalidPlayerIdException;
-import org.uc.exception.InvalidTeamIdException;
-import org.uc.exception.PlayerNotFoundException;
-import org.uc.exception.TeamNotFoundException;
+import org.uc.exception.*;
 
 import java.util.List;
 
@@ -18,7 +15,7 @@ public interface PlayerService {
     List<Player> getPlayerListByTeam(Team team) throws InvalidTeamIdException, TeamNotFoundException;
     List<Player> getWaitList();
 
-    void addToList(Player player);
+    void addToList(Player player) throws UsernameExistsException;
     void removeFromList(Player player);
     Player getById(Long id) throws InvalidPlayerIdException, PlayerNotFoundException;
     Player updatePlayer(PlayerUpdateDto dto) throws InvalidPlayerIdException, PlayerNotFoundException;

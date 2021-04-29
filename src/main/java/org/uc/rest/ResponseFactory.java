@@ -1,4 +1,4 @@
-package org.uc.exception;
+package org.uc.rest;
 
 import javax.ws.rs.core.Response;
 

@@ -3,21 +3,14 @@ package org.uc.service;
 import org.uc.entity.Player;
 import org.uc.entity.PlayerUpdateDto;
 import org.uc.entity.Team;
-import org.uc.exception.InvalidPlayerIdException;
-import org.uc.exception.InvalidTeamIdException;
-import org.uc.exception.PlayerNotFoundException;
-import org.uc.exception.TeamNotFoundException;
+import org.uc.exception.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.ws.rs.core.Response;
+import javax.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -100,7 +93,7 @@ public class PlayerServiceImpl implements PlayerService {
 	@Override
 	public Player updatePlayer(PlayerUpdateDto dto)	throws InvalidPlayerIdException, PlayerNotFoundException {
 		Player playerToUpdate = getById(dto.getId());
-		
+
 		if (dto.getUserName() != null) {
 			playerToUpdate.setUserName(dto.getUserName());
 		}
@@ -111,8 +104,14 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public void addToList(Player player) {
-		em.persist(player);
+	public void addToList(Player player) throws UsernameExistsException {
+		try {
+			em.persist(player);
+		}
+		catch (ConstraintViolationException e) {
+			throw new UsernameExistsException(player.getUserName());
+		}
+
 	}
 
 

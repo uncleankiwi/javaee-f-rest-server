@@ -76,7 +76,12 @@ public class PlayerResource {
     @Consumes({APPLICATION_JSON})
     @Produces({APPLICATION_JSON})
     public Response createPlayer(Player player) {
+        try {
         playerService.addToList(player);
+        }
+        catch (UsernameExistsException e) {
+            return ResponseFactory.badRequest(e.getMessage());
+        }
         return ResponseFactory.created(player);
     }
 }
