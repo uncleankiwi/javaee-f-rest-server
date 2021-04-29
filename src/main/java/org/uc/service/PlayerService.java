@@ -4,7 +4,9 @@ import org.uc.entity.Player;
 import org.uc.entity.PlayerUpdateDto;
 import org.uc.entity.Team;
 import org.uc.exception.InvalidPlayerIdException;
+import org.uc.exception.InvalidTeamIdException;
 import org.uc.exception.PlayerNotFoundException;
+import org.uc.exception.TeamNotFoundException;
 
 import java.util.List;
 
@@ -13,8 +15,7 @@ public interface PlayerService {
 
     List<Player> getPlayerList();
 
-    List<Player> getPlayerListByTeam(Team team);
-
+    List<Player> getPlayerListByTeam(Team team) throws InvalidTeamIdException, TeamNotFoundException;
     List<Player> getWaitList();
 
     void addToList(Player player);

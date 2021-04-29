@@ -4,8 +4,11 @@ import org.uc.entity.Player;
 import org.uc.entity.PlayerUpdateDto;
 import org.uc.entity.Team;
 import org.uc.exception.InvalidPlayerIdException;
+import org.uc.exception.InvalidTeamIdException;
 import org.uc.exception.PlayerNotFoundException;
+import org.uc.exception.TeamNotFoundException;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,19 +31,14 @@ public class PlayerServiceImpl implements PlayerService {
 	@PersistenceContext
 	private EntityManager em;
 
+	@EJB
+	private TeamService teamService;
+
 
 	@Override
 	public void clearList() {
 		Query deleteFromPlayer = em.createNamedQuery("Player.clearAll");
 		deleteFromPlayer.executeUpdate();
-	}
-
-	public List<Player> getAllByBuilder() {
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaQuery<Player> query = builder.createQuery(Player.class);
-		Root<Player> from  = query.from(Player.class);
-		TypedQuery<Player> q = em.createQuery(query.select(from));
-		return q.getResultList();
 	}
 
 	@Override
@@ -62,9 +60,20 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public List<Player> getPlayerListByTeam(Team team) {
+	public List<Player> getPlayerListByTeam(Team team) throws InvalidTeamIdException, TeamNotFoundException {
+		//no valid team id is indicated
+		if (team.getId() == null || team.getId() <= 0) {
+			throw new InvalidTeamIdException(team.getId());
+		}
+
+		//team doesn't exist
+		Team dbTeam =  teamService.getById(team.getId());
+		if (dbTeam == null) {
+			throw new TeamNotFoundException(team.getId());
+		}
+
 		return em.createNamedQuery("Player.findAllByTeam", Player.class)
-				.setParameter("teamId", team.getId())
+				.setParameter("teamId", dbTeam.getId())
 				.getResultList();
 	}
 
