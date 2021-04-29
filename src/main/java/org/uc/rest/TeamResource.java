@@ -52,7 +52,7 @@ public class TeamResource {
 		} catch (InvalidTeamIdException | TeamNotFoundException | InvalidPlayerIdException | PlayerNotFoundException e) {
 			return ResponseFactory.badRequest(e.getMessage());
 		}
-		return ResponseFactory.ok("Added player " + player + " to team id " + id);
+		return ResponseFactory.ok("Added player id " + player.getId() + " to team id " + id);
 	}
 
 	@PUT

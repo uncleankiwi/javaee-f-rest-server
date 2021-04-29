@@ -47,7 +47,7 @@ public class LeagueResource {
 			return ResponseFactory.badRequest(e.getMessage());
 		}
 
-		return ResponseFactory.ok("Added team " + team + " to league id " + id);
+		return ResponseFactory.ok("Added team id " + team.getId() + " to league id " + id);
 	}
 
 	@GET
