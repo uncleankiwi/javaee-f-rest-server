@@ -4,6 +4,8 @@ import org.uc.entity.League;
 import org.uc.entity.Player;
 import org.uc.entity.Team;
 import org.uc.entity.TeamUpdateDto;
+import org.uc.exception.InvalidTeamIdException;
+import org.uc.exception.TeamNotFoundException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -50,7 +52,16 @@ public class TeamServiceImpl implements TeamService {
 	}
 
 	@Override
-	public Team getById(Long id) {
-		return em.find(Team.class, id);
+	public Team getById(Long id) throws InvalidTeamIdException, TeamNotFoundException {
+		if (id == null || id <= 0) {
+			throw new InvalidTeamIdException(id);
+		}
+
+		//team doesn't exist
+		Team team =  em.find(Team.class, id);
+		if (team == null) {
+			throw new TeamNotFoundException(id);
+		}
+		return team;
 	}
 }

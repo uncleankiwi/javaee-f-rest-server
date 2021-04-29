@@ -30,8 +30,12 @@ public class PlayerResource {
     @Path("{id}")
     @Produces(TEXT_PLAIN)
     public Response deletePlayer(@PathParam("id") long id) {
-        playerService.removeFromList(playerService.getById(id));
-        return Response.ok().entity("Player " + id + " deleted").build();
+        try {
+            playerService.removeFromList(playerService.getById(id));
+        } catch (InvalidPlayerIdException | PlayerNotFoundException e) {
+            return ResponseFactory.badRequest(e.getMessage());
+        }
+        return ResponseFactory.ok("Player " + id + " deleted");
     }
 
 

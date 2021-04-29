@@ -20,6 +20,6 @@ public interface PlayerService {
 
     void addToList(Player player);
     void removeFromList(Player player);
-    Player getById(Long id);
+    Player getById(Long id) throws InvalidPlayerIdException, PlayerNotFoundException;
     Player updatePlayer(PlayerUpdateDto dto) throws InvalidPlayerIdException, PlayerNotFoundException;
 }

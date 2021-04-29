@@ -61,25 +61,25 @@ public class PlayerServiceImpl implements PlayerService {
 
 	@Override
 	public List<Player> getPlayerListByTeam(Team team) throws InvalidTeamIdException, TeamNotFoundException {
-		//no valid team id is indicated
-		if (team.getId() == null || team.getId() <= 0) {
-			throw new InvalidTeamIdException(team.getId());
-		}
-
-		//team doesn't exist
 		Team dbTeam =  teamService.getById(team.getId());
-		if (dbTeam == null) {
-			throw new TeamNotFoundException(team.getId());
-		}
-
 		return em.createNamedQuery("Player.findAllByTeam", Player.class)
 				.setParameter("teamId", dbTeam.getId())
 				.getResultList();
 	}
 
 	@Override
-	public Player getById(Long id) {
-		return em.find(Player.class, id);
+	public Player getById(Long id) throws InvalidPlayerIdException, PlayerNotFoundException {
+		if (id == null || id <= 0) {
+			throw new InvalidPlayerIdException(id);
+		}
+
+		Player player = em.find(Player.class, id);
+
+		if (player == null) {
+			throw new PlayerNotFoundException(id);
+		}
+
+		return player;
 	}
 
 	@Override
@@ -98,18 +98,9 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public Player updatePlayer(PlayerUpdateDto dto)
-			throws InvalidPlayerIdException, PlayerNotFoundException {
-		if (dto.getId() == null || dto.getId() == 0) {
-			throw new InvalidPlayerIdException(dto.getId());
-		}
-
+	public Player updatePlayer(PlayerUpdateDto dto)	throws InvalidPlayerIdException, PlayerNotFoundException {
 		Player playerToUpdate = getById(dto.getId());
-
-		if (playerToUpdate == null) {
-			throw new PlayerNotFoundException(dto.getId());
-		}
-
+		
 		if (dto.getUserName() != null) {
 			playerToUpdate.setUserName(dto.getUserName());
 		}
