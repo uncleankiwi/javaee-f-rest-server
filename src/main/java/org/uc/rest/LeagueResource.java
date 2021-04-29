@@ -41,17 +41,13 @@ public class LeagueResource {
 	@Consumes({APPLICATION_JSON})
 	@Produces(TEXT_PLAIN)
 	public Response addTeamToLeague(@PathParam("id") long id, Team team) {
-		League league;
-		Team teamToAdd;
 		try {
-			league = leagueService.getById(id);
-			teamToAdd = teamService.getById(team.getId());
-			leagueService.addTeamToLeague(league, teamToAdd);
+			leagueService.addTeamToLeague(id, team);
 		} catch (InvalidLeagueIdException | LeagueNotFoundException | InvalidTeamIdException | TeamNotFoundException e) {
 			return ResponseFactory.badRequest(e.getMessage());
 		}
 
-		return ResponseFactory.ok("Added team " + teamToAdd + " to " + league);
+		return ResponseFactory.ok("Added team " + team + " to league id " + id);
 	}
 
 	@GET

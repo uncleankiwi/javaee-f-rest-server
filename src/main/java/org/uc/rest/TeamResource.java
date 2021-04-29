@@ -4,7 +4,6 @@ import org.uc.entity.Player;
 import org.uc.entity.Team;
 import org.uc.entity.TeamUpdateDto;
 import org.uc.exception.*;
-import org.uc.service.PlayerService;
 import org.uc.service.TeamService;
 
 import javax.ejb.EJB;
@@ -16,9 +15,6 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 
 @Path("/teams")
 public class TeamResource {
-	@EJB
-	private PlayerService playerService;
-
 	@EJB
 	private TeamService teamService;
 
@@ -50,18 +46,13 @@ public class TeamResource {
 	@Path("{id}")
 	@Consumes({APPLICATION_JSON})
 	@Produces(TEXT_PLAIN)
-	public Response addPlayerToTeam(@PathParam("id") long id, Player player) {
-		Team team;
-		Player playerToAdd;
-
+	public Response addPlayerToTeam(@PathParam("id") Long id, Player player) {
 		try {
-			team = teamService.getById(id);
-			playerToAdd = playerService.getById(player.getId());
-			teamService.addPlayerToTeam(team, playerToAdd);
+			teamService.addPlayerToTeam(id, player);
 		} catch (InvalidTeamIdException | TeamNotFoundException | InvalidPlayerIdException | PlayerNotFoundException e) {
 			return ResponseFactory.badRequest(e.getMessage());
 		}
-		return ResponseFactory.ok("Added player " + playerToAdd + " to team " + team);
+		return ResponseFactory.ok("Added player " + player + " to team id " + id);
 	}
 
 	@PUT

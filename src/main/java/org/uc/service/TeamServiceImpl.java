@@ -4,10 +4,7 @@ import org.uc.entity.League;
 import org.uc.entity.Player;
 import org.uc.entity.Team;
 import org.uc.entity.TeamUpdateDto;
-import org.uc.exception.InvalidLeagueIdException;
-import org.uc.exception.InvalidTeamIdException;
-import org.uc.exception.LeagueNotFoundException;
-import org.uc.exception.TeamNotFoundException;
+import org.uc.exception.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -23,6 +20,9 @@ public class TeamServiceImpl implements TeamService {
 
 	@EJB
 	private LeagueService leagueService;
+
+	@EJB
+	private PlayerService playerService;
 
 	@Override
 	public void createTeam(Team team) throws InvalidLeagueIdException, LeagueNotFoundException {
@@ -41,9 +41,12 @@ public class TeamServiceImpl implements TeamService {
 
 	//assumes that team and player exist
 	@Override
-	public void addPlayerToTeam(Team team, Player player) {
-		player.setTeam(team);
-		em.merge(player);
+	public void addPlayerToTeam(Long teamId, Player player)
+			throws InvalidTeamIdException, TeamNotFoundException, InvalidPlayerIdException, PlayerNotFoundException {
+		Team team = getById(teamId);
+		Player playerToAdd = playerService.getById(player.getId());
+		playerToAdd.setTeam(team);
+		em.merge(playerToAdd);
 	}
 
 	@Override
