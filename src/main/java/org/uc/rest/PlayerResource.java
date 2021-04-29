@@ -77,10 +77,10 @@ public class PlayerResource {
     @Produces({APPLICATION_JSON})
     public Response createPlayer(Player player) {
         try {
-        playerService.addToList(player);
+            playerService.addToList(player);
         }
-        catch (UsernameExistsException e) {
-            return ResponseFactory.badRequest(e.getMessage());
+        catch (Exception e) {
+            return ResponseFactory.badRequest(new UsernameExistsException(player.getUserName()).getMessage());
         }
         return ResponseFactory.created(player);
     }

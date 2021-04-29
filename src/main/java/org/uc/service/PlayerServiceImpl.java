@@ -108,7 +108,9 @@ public class PlayerServiceImpl implements PlayerService {
 		try {
 			em.persist(player);
 		}
-		catch (ConstraintViolationException e) {
+		catch (Exception e) {
+			//this is unable to catch the exception for some reason, so it'll be
+			//thrown and caught in PlayerResource
 			throw new UsernameExistsException(player.getUserName());
 		}
 
